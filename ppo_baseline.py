@@ -1,10 +1,11 @@
 import gymnasium as gym
-import matplotlib.pyplot as plt
 import highway_env
+from stable_baselines3 import PPO
+
 
 env = gym.make(
-    'highway-v0',
-    render_mode="rgb_array",
+    "highway-v0", 
+    render_mode="human", 
     config={
         "observation": {
             "type": "Kinematics",
@@ -21,10 +22,23 @@ env = gym.make(
             "absolute": False,
             "vehicles_count": 15
         }
-    }
-)
-obs = env.reset()
-env.render()
+})
+env.reset()
 
-for _ in range(100):
-    obs, reward, done, truncated, info = env.step(env.action_space.sample())
+
+model = PPO("MlpPolicy", env, verbose=1)
+
+
+model.learn(total_timesteps=200_000)
+
+
+model.save("ppo_highway_baseline")
+
+obs = env.reset()
+for _ in range(1000):
+    action, _ = model.predict(obs)
+    obs, reward, done, _ = env.step(action)
+    env.render()
+    if done:
+        obs = env.reset()
+
