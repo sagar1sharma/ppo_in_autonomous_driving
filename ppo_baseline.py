@@ -26,7 +26,11 @@ env = gym.make(
 env.reset()
 
 
-model = PPO("MlpPolicy", env, verbose=1)
+model = PPO("MlpPolicy", env, verbose=1, learning_rate=3e-4,
+    n_steps=2048,
+    batch_size=64,
+    n_epochs=10,
+    gamma=0.99)
 
 
 model.learn(total_timesteps=200_000)
@@ -37,7 +41,8 @@ model.save("ppo_highway_baseline")
 obs = env.reset()
 for _ in range(1000):
     action, _ = model.predict(obs)
-    obs, reward, done, _ = env.step(action)
+    obs, reward, terminated, truncated, info = env.step(action)
+    done = terminated or truncated
     env.render()
     if done:
         obs = env.reset()
