@@ -7,33 +7,31 @@ env = gym.make(
     "highway-v0", 
     render_mode="human", 
     config={
-        "observation": {
+            "observation": {
             "type": "Kinematics",
-            "vehicles_count": 15,
             "features": ["presence", "x", "y", "vx", "vy", "cos_h", "sin_h"],
             "features_range": {
                 "x": [-100, 100],
                 "y": [-100, 100],
-                "vx": [-20, 20],
-                "vy": [-20, 20]
+                "vx": [-10, 10],  # Reduced velocity range
+                "vy": [-10, 10]   # Reduced velocity range
             },
             "grid_size": [[-27.5, 27.5], [-27.5, 27.5]],
             "grid_step": [5, 5],
-            "absolute": False,
-            "vehicles_count": 15
+            "absolute": False
         }
 })
 env.reset()
 
 
 model = PPO("MlpPolicy", env, verbose=1, learning_rate=3e-4,
-    n_steps=2048,
+    n_steps=4096,
     batch_size=64,
-    n_epochs=10,
+    n_epochs=5,
     gamma=0.99)
 
 
-model.learn(total_timesteps=200_000)
+model.learn(total_timesteps=100_000)
 
 
 model.save("ppo_highway_baseline")
@@ -45,5 +43,6 @@ for _ in range(1000):
     done = terminated or truncated
     env.render()
     if done:
-        obs = env.reset()
+        obs, info = env.reset()
+
 
