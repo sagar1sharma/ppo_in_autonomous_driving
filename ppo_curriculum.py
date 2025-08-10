@@ -1,4 +1,4 @@
-import gym
+import gymnasium as gym
 import highway_env
 from stable_baselines3 import PPO
 from curriculum_utils import get_curriculum_stage
@@ -12,11 +12,11 @@ def train_curriculum(total_stages=5, timesteps_per_stage=50_000):
         config = get_curriculum_stage(stage)
 
         env = gym.make("highway-v0")
-        env.configure(config)
+        env.unwrapped.configure(config)
         env.reset()
 
         if model is None:
-            model = PPO("MlpPolicy", env, verbose=1)
+            model = PPO("MlpPolicy", env,device="cpu", verbose=1)
         else:
             model.set_env(env)
 
