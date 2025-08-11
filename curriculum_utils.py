@@ -4,9 +4,8 @@ def get_curriculum_stage(stage):
     return {
         "vehicles_density": density,
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
-        "speed_limit": [5, 10],  # Reduce speed range for other vehicles
-        "controlled_vehicle": {
-            "type": "highway_env.vehicle.behavior.IDMVehicle",
-            "initial_speed": 10  # Increase agent's initial speed
-        }
+        "target_speed": 25,              # encourage higher speeds
+        "reward_speed_range": [20, 30],  # reward being in this speed range
+        "simulation_frequency": 15,
+        "policy_frequency": 5,
     }

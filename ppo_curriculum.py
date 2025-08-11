@@ -3,7 +3,7 @@ import highway_env
 from stable_baselines3 import PPO
 from curriculum_utils import get_curriculum_stage
 
-def train_curriculum(total_stages=5, timesteps_per_stage=5000):
+def train_curriculum(total_stages=5, timesteps_per_stage=50_000):
     model = None
 
     for stage in range(total_stages):
@@ -17,8 +17,8 @@ def train_curriculum(total_stages=5, timesteps_per_stage=5000):
 
         if model is None:
             model = PPO("MlpPolicy", env,device="cpu", verbose=1,learning_rate=3e-4,
-            n_steps=1024,
-            batch_size=32,
+            n_steps=2048,
+            batch_size=64,
             gamma=0.99)
         else:
             model.set_env(env)
