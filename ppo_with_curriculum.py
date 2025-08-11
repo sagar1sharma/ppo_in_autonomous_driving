@@ -3,7 +3,7 @@ import highway_env
 from stable_baselines3 import PPO
 from curriculum_utils import get_curriculum_stage
 
-def train_curriculum(total_stages=5, timesteps_per_stage=5000):
+def train_curriculum(total_stages=5, timesteps_per_stage=10_000):
     model = None
 
     for stage in range(total_stages):

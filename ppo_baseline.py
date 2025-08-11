@@ -3,12 +3,13 @@ import highway_env
 from stable_baselines3 import PPO
 
 
-def train_baseline(total_timesteps=250_000):
+def train_baseline(total_timesteps=50_000):
     env = gym.make("highway-v0")
     env.unwrapped.configure({
-        "vehicles_density": 0.3,  # Fixed density for baseline
+        "vehicles_density": 0.5,
+        "lanes_count": 6,
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
-        "speed_limit": [10, 20],
+        "speed_limit": [25, 30],
         "controlled_vehicle": {
             "type": "highway_env.vehicle.behavior.IDMVehicle",
             "initial_speed": 10
